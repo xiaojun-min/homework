@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author TODO: Xiaojun Min
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -16,6 +16,11 @@ public class Model extends Observable {
     private int maxScore;
     /** True iff game is ended. */
     private boolean gameOver;
+
+
+
+
+    private boolean getMoved;
 
     /* Coordinate System: column C, row R of the board (where row 0,
      * column 0 is the lower-left corner of the board) will correspond
@@ -31,6 +36,7 @@ public class Model extends Observable {
         board = new Board(size);
         score = maxScore = 0;
         gameOver = false;
+
     }
 
     /** A new 2048 game where RAWVALUES contain the values of the tiles
@@ -42,6 +48,7 @@ public class Model extends Observable {
         this.score = score;
         this.maxScore = maxScore;
         this.gameOver = gameOver;
+
     }
 
     /** Return the current Tile at (COL, ROW), where 0 <= ROW < size(),
@@ -94,6 +101,8 @@ public class Model extends Observable {
         setChanged();
     }
 
+
+
     /** Tilt the board toward SIDE. Return true iff this changes the board.
      *
      * 1. If two Tile objects are adjacent in the direction of motion and have
@@ -107,19 +116,217 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      * */
     public boolean tilt(Side side) {
+
+        boolean[][] mergedBefore = new boolean[board.size()][board.size()];
+
+
         boolean changed;
         changed = false;
 
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+/*
+        //from row 2
+        for(int col = 0; col < board.size(); col++){
+            Tile t = board.tile(col,2);
+            //row 2 to row 3
+            if(t != null && canMove(col, 3, col, 2)){
+                if(board.move(col, 3, t)){
+                    mergedBefore[col][3] = true;
+                    getMerged = true;
+                }
+            }
+        }
 
+        //from row 1
+        for(int col = 0; col < board.size(); col++){
+            Tile t = board.tile(col,1);
+            //row 1 to row 3
+            if(t != null && board.tile(col, 2)==null && canMove(col, 3, col, 1)
+                    && !mergedBefore[col][3]){
+                if(board.move(col, 3, t)){
+                    mergedBefore[col][3] = true;
+                    getMerged = true;
+                }
+            }
+            //row 1 to row 2
+            else if(t != null && canMove(col, 2, col, 1)
+                    && !mergedBefore[col][2]){
+                if(board.move(col, 2, t)){
+                    mergedBefore[col][2] = true;
+                    getMerged = true;
+                }
+            }
+        }
+        //from row 0
+        for(int col = 0; col < board.size(); col++){
+            Tile t = board.tile(col,0);
+            //row 0 to row 3
+            if(t != null && board.tile(col, 2)==null && board.tile(col, 1)==null &&
+                    canMove(col, 3, col, 0) && !mergedBefore[col][3]){
+                if(board.move(col, 3, t)){
+                    mergedBefore[col][3] = true;
+                    getMerged = true;
+                }
+            }
+            //row 0 to row 2
+            else if(t != null && board.tile(col, 1)==null && canMove(col, 2, col, 0)
+            &&!mergedBefore[col][2]){
+                if(board.move(col, 2, t)){
+                    mergedBefore[col][2] = true;
+                    getMerged = true;
+                }
+            }
+            //row 0 to row 1
+            else if(t != null && canMove(col, 1, col, 0)){
+                if(board.move(col, 1, t)){
+                    mergedBefore[col][1] = true;
+                    getMerged = true;
+                }
+            }
+        }
+*/
+
+/*
+        //from row 2
+        for(int col = 0; col < board.size(); col++){
+            Tile t = board.tile(col,2);
+            //row 2 to row 3
+            if(t != null && canMove(col, 3, col, 2)){
+                if(board.move(col, 3, t)){
+                    mergedBefore[col][3] = true;
+                    getMerged = true;
+                }
+            }
+        }
+
+        //from row 1
+        for(int col = 0; col < board.size(); col++){
+            Tile t = board.tile(col,1);
+            //row 1 to row 3
+            if(t != null  && canMove(col, 3, col, 1) && !mergedBefore[col][3]){
+                if(board.move(col, 3, t)){
+                    mergedBefore[col][3] = true;
+                    getMerged = true;
+                }
+            }
+            //row 1 to row 2
+            else if(t != null && canMove(col, 2, col, 1) && !mergedBefore[col][2]){
+                if(board.move(col, 2, t)){
+                    mergedBefore[col][2] = true;
+                    getMerged = true;
+                }
+            }
+        }
+        //from row 0
+        for(int col = 0; col < board.size(); col++){
+            Tile t = board.tile(col,0);
+            //row 0 to row 3
+            if(t != null && canMove(col, 3, col, 0) && !mergedBefore[col][3]){
+                if(board.move(col, 3, t)){
+                    mergedBefore[col][3] = true;
+                    getMerged = true;
+                }
+            }
+            //row 0 to row 2
+            else if(t != null && canMove(col, 2, col, 0) &&!mergedBefore[col][2]){
+                if(board.move(col, 2, t)){
+                    mergedBefore[col][2] = true;
+                    getMerged = true;
+                }
+            }
+            //row 0 to row 1
+            else if(t != null && canMove(col, 1, col, 0)){
+                if(board.move(col, 1, t)){
+                    mergedBefore[col][1] = true;
+                    getMerged = true;
+                }
+            }
+        }
+*/
+
+
+        //generic method
+        if(side == side.NORTH){
+            score += helperMove(mergedBefore);
+        }
+        else if(side == side.SOUTH){
+            board.setViewingPerspective(Side.SOUTH);
+            score += helperMove(mergedBefore);
+            board.setViewingPerspective(Side.NORTH);
+        }
+        else if(side == side.WEST){
+            board.setViewingPerspective(Side.WEST);
+            score += helperMove(mergedBefore);
+            board.setViewingPerspective(Side.NORTH);
+        }
+        else if(side == side.EAST){
+            board.setViewingPerspective(Side.EAST);
+            score += helperMove(mergedBefore);
+            board.setViewingPerspective(Side.NORTH);
+
+        }
+
+
+
+
+
+        for(int i = 0; i < board.size(); i++){
+            for(int j = 0; j < board.size(); j++){
+                mergedBefore[i][j] = false;
+            }
+        }
+
+
+
+
+//        changed = true;
+        changed = getMoved;
         checkGameOver();
+
         if (changed) {
             setChanged();
         }
+
         return changed;
     }
+
+    public boolean canMove(int i, int j, int oldi, int oldj) {
+        int size = board.size();
+        if(i < 0 || i >= size || j < 0 || j >= size ||
+                board.tile(i, j)!=null && board.tile(i, j).value() != board.tile(oldi, oldj).value()) return false;
+        //check can it go up
+        for(int k = oldj+1; k < j; k++){
+            if(board.tile(i, k) != null) return false;
+        }
+
+        return true;
+    }
+
+
+    public int helperMove(boolean[][] mergedBefore) {
+        int sc = 0;
+        for(int col = 0; col < board.size(); col++){
+            for(int row = board.size()-2; row >= 0; row--){
+                Tile t = board.tile(col, row);
+                for(int upToRow = board.size()-1; upToRow > row; upToRow--){
+                    if(t != null && canMove(col, upToRow, col, row) && (upToRow == row+1 || !mergedBefore[col][upToRow])) {
+                        getMoved = true;
+                        if (board.move(col, upToRow, t)) {
+                            mergedBefore[col][upToRow] = true;
+
+                            sc += board.tile(col, upToRow).value();
+                        }
+                        break;
+                    }
+
+                }
+            }
+        }
+        return sc;
+    }
+
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
@@ -138,6 +345,11 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        for(int i = 0; i < b.size(); i++){
+            for(int j = 0; j < b.size(); j++){
+                if(b.tile(i, j)==null) return true;
+            }
+        }
         return false;
     }
 
@@ -148,6 +360,11 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for (int i = 0; i < b.size(); i++) {
+            for (int j = 0; j < b.size(); j++) {
+                if (b.tile(i, j)!= null && b.tile(i, j).value() == MAX_PIECE) return true;
+            }
+        }
         return false;
     }
 
@@ -159,7 +376,32 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        //check at least one empty space on the board.
+        if (emptySpaceExists(b)) return true;
+        //check there are two adjacent tiles with the same value.
+        for (int i = 0; i < b.size(); i++){
+            for (int j = 0; j < b.size(); j++){
+                if(isValidLoc(b, i, j-1) && b.tile(i, j-1).value() == b.tile(i, j).value()){
+                    return true;
+                }
+                if(isValidLoc(b, i-1, j) && b.tile(i-1, j).value() == b.tile(i, j).value()){
+                    return true;
+                }
+                if(isValidLoc(b, i, j+1) && b.tile(i, j+1).value() == b.tile(i, j).value()){
+                    return true;
+                }
+                if(isValidLoc(b, i+1, j) && b.tile(i+1, j).value() == b.tile(i, j).value()){
+                    return true;
+                }
+            }
+        }
         return false;
+    }
+
+    public static boolean isValidLoc(Board b, int i, int j) {
+        int size = b.size();
+        if(i < 0 || i >= size || j < 0 || j >= size) return false;
+        return true;
     }
 
 
