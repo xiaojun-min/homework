@@ -121,12 +121,13 @@ public class Model extends Observable {
 
 
         boolean changed;
-        changed = false;
+//        changed = false;
 
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 /*
+        ----hardcode version 1----
         //from row 2
         for(int col = 0; col < board.size(); col++){
             Tile t = board.tile(col,2);
@@ -189,6 +190,7 @@ public class Model extends Observable {
 */
 
 /*
+        ----hardcode version 2----
         //from row 2
         for(int col = 0; col < board.size(); col++){
             Tile t = board.tile(col,2);
@@ -247,7 +249,7 @@ public class Model extends Observable {
 */
 
 
-        //generic method
+        //move& merge according to the side
         if(side == side.NORTH){
             score += helperMove(mergedBefore);
         }
@@ -296,7 +298,7 @@ public class Model extends Observable {
         int size = board.size();
         if(i < 0 || i >= size || j < 0 || j >= size ||
                 board.tile(i, j)!=null && board.tile(i, j).value() != board.tile(oldi, oldj).value()) return false;
-        //check can it go up
+        //check if it can go up
         for(int k = oldj+1; k < j; k++){
             if(board.tile(i, k) != null) return false;
         }
@@ -304,7 +306,7 @@ public class Model extends Observable {
         return true;
     }
 
-
+    //generic moving &merging adapted from hardcoded version 2
     public int helperMove(boolean[][] mergedBefore) {
         int sc = 0;
         for(int col = 0; col < board.size(); col++){
