@@ -10,7 +10,7 @@ public class IntListExercises {
      */
     public static void addConstant(IntList lst, int c) {
         IntList head = lst;
-        while (head.rest != null) {
+        while (head != null) {
             head.first += c;
             head = head.rest;
         }
@@ -76,7 +76,8 @@ public class IntListExercises {
         if (currElemIsPrime) {
             lst.first *= lst.first;
         }
-
-        return currElemIsPrime || squarePrimes(lst.rest);
+        //solution: change the order of squarePrimes(lst.rest) and currElemIsPrime. Before when currElemIsPrime is true
+        //the code will jump to the last level and the head will become to the node that we already evaluated, which causes error
+        return squarePrimes(lst.rest) || currElemIsPrime ;
     }
 }
